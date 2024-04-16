@@ -21,12 +21,12 @@ app.get("/mine", (req, res) => {
     res.status(200).send(blockchain.chain[blockchain.chain.length - 1]);
 });
 
-app.post("/new", (req, res) => {
+app.post("/transactions/new", (req, res) => {
     const data = req.body;
     const blockNumber = blockchain.newTransaction(data);
     res.status(200).send(`will be added to block ${blockNumber}`);
 });
 
-app.get("/getChain", (req, res) => {
+app.get("/chain", (req, res) => {
     res.status(200).send(blockchain.chain);
 });

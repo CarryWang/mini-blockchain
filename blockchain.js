@@ -6,20 +6,20 @@ export class Block {
         this.timestamp = timestamp;
         this.transactions = [];
         this.previousHash = previousHash;
-        this.hash = this.calcHash();
+        this.hash = "";
         this.nonce = 0;
     }
 
-    calcHash() {
-        return crypto
-            .SHA256(
-                this.index +
-                    this.previousHash +
-                    this.timestamp +
-                    JSON.stringify(this.transactions).toString(),
-            )
-            .toString();
-    }
+    // calcHash() {
+    //     return crypto
+    //         .SHA256(
+    //             this.index +
+    //                 this.previousHash +
+    //                 this.timestamp +
+    //                 JSON.stringify(this.transactions).toString(),
+    //         )
+    //         .toString();
+    // }
 }
 
 export class Blockchain {
@@ -36,7 +36,9 @@ export class Blockchain {
 
     createGenesisBlock() {
         // return new Block(0, new Date(), "Genesis block", "0");
-        const genesisBlock = new Block(0, new Date(), "0");
+        const genesisHash =
+            "0000000000000000000000000000000000000000000000000000000000000000";
+        const genesisBlock = new Block(0, new Date(), genesisHash);
         mineBlock(genesisBlock, this.difficulty);
         return genesisBlock;
     }
@@ -80,6 +82,7 @@ function mineBlock(block, difficulty) {
         block.hash = crypto
             .SHA256(
                 block.index +
+                    block.previousHash +
                     block.timestamp +
                     JSON.stringify(block.transactions).toString() +
                     block.nonce,
