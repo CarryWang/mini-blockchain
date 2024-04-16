@@ -23,14 +23,15 @@ post http://localhost:3000/transactions/new
 ```
 get http://localhost:3000/mine
 ```
-<img width="1392" alt="mine" src="https://github.com/CarryWang/mini-blockchain/assets/12207994/152a8da3-afed-40fc-ab29-6fe23d4ced2c">
+<img width="1392" alt="mine" src="https://github.com/CarryWang/mini-blockchain/assets/12207994/d7ab960b-494c-4784-a4c2-73bb5fcdea5f">
 
 ### get blcokchain
 
 ```
 get http://localhost:3000/chain
 ```
-<img width="1392" alt="chain" src="https://github.com/CarryWang/mini-blockchain/assets/12207994/88b1239d-4645-432c-bfee-0c8aa7600ee8">
+<img width="1392" alt="chain" src="https://github.com/CarryWang/mini-blockchain/assets/12207994/83380ed7-f102-4e29-a24d-6960f813d484">
+
 
 
 
