@@ -45,9 +45,14 @@ export class Blockchain {
         return this.chain[this.chain.length - 1];
     }
 
-    addBlock(newBlock) {
+    addBlock() {
         // newBlock.previousHash = this.getLatestBlock().hash;
         // newBlock.hash = newBlock.calcHash();
+
+        const newBlock = new Block(this.getLatestBlock().index + 1, new Date());
+        newBlock.transactions = this.trasactions;
+        this.trasactions = [];
+
         mineBlock(newBlock, this.difficulty);
         this.chain.push(newBlock);
     }
