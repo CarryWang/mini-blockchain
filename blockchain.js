@@ -51,7 +51,11 @@ export class Blockchain {
         // newBlock.previousHash = this.getLatestBlock().hash;
         // newBlock.hash = newBlock.calcHash();
 
-        const newBlock = new Block(this.getLatestBlock().index + 1, new Date());
+        const newBlock = new Block(
+            this.getLatestBlock().index + 1,
+            new Date(),
+            this.getLatestBlock().hash,
+        );
         newBlock.transactions = this.trasactions;
         this.trasactions = [];
 
