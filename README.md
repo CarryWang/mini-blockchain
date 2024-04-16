@@ -14,23 +14,23 @@ node index
 ### add new transaction
 
 ```
-post http://localhost:3000/new
+post http://localhost:3000/transactions/new
 ```
-<img width="1392" alt="Screenshot 2024-04-16 at 21 43 12" src="https://github.com/CarryWang/mini-blockchain/assets/12207994/ec3f1941-bbcb-475c-87c6-252bdf110839">
-
+<img width="1392" alt=":transactions:new" src="https://github.com/CarryWang/mini-blockchain/assets/12207994/9238dcd4-d263-4b06-b506-566410a4b697">
 
 ### mine
 
 ```
 get http://localhost:3000/mine
 ```
-<img width="1392" alt="Screenshot 2024-04-16 at 21 43 27" src="https://github.com/CarryWang/mini-blockchain/assets/12207994/3ef3694e-a8c8-404e-a732-7b89680e99d8">
-
+<img width="1392" alt="mine" src="https://github.com/CarryWang/mini-blockchain/assets/12207994/152a8da3-afed-40fc-ab29-6fe23d4ced2c">
 
 ### get blcokchain
 
 ```
-get http://localhost:3000/getChain
+get http://localhost:3000/chain
 ```
-<img width="1392" alt="Screenshot 2024-04-16 at 21 43 51" src="https://github.com/CarryWang/mini-blockchain/assets/12207994/8a204c47-b670-47f2-a2bd-956338ebe41d">
+<img width="1392" alt="chain" src="https://github.com/CarryWang/mini-blockchain/assets/12207994/88b1239d-4645-432c-bfee-0c8aa7600ee8">
+
+
 
