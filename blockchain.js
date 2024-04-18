@@ -1,97 +1,89 @@
 import crypto from "crypto-js";
 
-export class Block {
-    constructor(index, timestamp, previousHash = "") {
+class Block {
+    constructor(index, timestamp, transactions = [], previousHash = "") {
         this.index = index;
         this.timestamp = timestamp;
-        this.transactions = [];
+        this.transactions = transactions;
         this.previousHash = previousHash;
         this.hash = "";
         this.nonce = 0;
     }
 
-    // calcHash() {
-    //     return crypto
-    //         .SHA256(
-    //             this.index +
-    //                 this.previousHash +
-    //                 this.timestamp +
-    //                 JSON.stringify(this.transactions).toString(),
-    //         )
-    //         .toString();
-    // }
+    calcHash() {
+        return crypto
+            .SHA256(
+                this.index +
+                    this.timestamp +
+                    JSON.stringify(this.transactions).toString() +
+                    this.previousHash +
+                    this.nonce,
+            )
+            .toString();
+    }
+
+    mineBlock(difficulty) {
+        while (!this.hash.startsWith("0".repeat(difficulty))) {
+            this.nonce++;
+            this.hash = crypto
+                .SHA256(
+                    this.index +
+                        this.timestamp +
+                        JSON.stringify(this.transactions).toString() +
+                        this.previousHash +
+                        this.nonce,
+                )
+                .toString();
+        }
+    }
 }
 
 export class Blockchain {
     constructor() {
         this.difficulty = 4;
+        this.pendingTrasactions = [];
         this.chain = [this.createGenesisBlock()];
-        this.trasactions = [];
-    }
-
-    newTransaction(transaction) {
-        this.trasactions.push(transaction);
-        return this.chain[this.chain.length - 1].index + 1;
     }
 
     createGenesisBlock() {
-        // return new Block(0, new Date(), "Genesis block", "0");
-        const genesisHash =
-            "0000000000000000000000000000000000000000000000000000000000000000";
-        const genesisBlock = new Block(0, new Date(), genesisHash);
-        mineBlock(genesisBlock, this.difficulty);
+        const genesisPreviousHash = "0".repeat(64);
+        const genesisBlock = new Block(0, Date.now(), [], genesisPreviousHash);
+        genesisBlock.mineBlock(this.difficulty);
+        genesisBlock.transactions.push({
+            sender: "",
+            recipient: genesisBlock.hash,
+            amount: 50,
+        });
         return genesisBlock;
+    }
+
+    createBlock() {
+        const minerReward = {
+            sender: "",
+            recipient: "miner_adress",
+            amount: 50,
+        };
+        this.pendingTrasactions.push(minerReward);
+
+        const block = new Block(
+            this.getLatestBlock().index + 1,
+            Date.now(),
+            this.pendingTrasactions,
+            this.getLatestBlock().hash,
+        );
+        block.mineBlock(this.difficulty);
+
+        this.chain.push(block);
+
+        this.pendingTrasactions = [];
     }
 
     getLatestBlock() {
         return this.chain[this.chain.length - 1];
     }
 
-    addBlock() {
-        // newBlock.previousHash = this.getLatestBlock().hash;
-        // newBlock.hash = newBlock.calcHash();
-
-        const newBlock = new Block(
-            this.getLatestBlock().index + 1,
-            new Date(),
-            this.getLatestBlock().hash,
-        );
-        newBlock.transactions = this.trasactions;
-        this.trasactions = [];
-
-        mineBlock(newBlock, this.difficulty);
-        this.chain.push(newBlock);
+    createTransaction(transaction) {
+        this.pendingTrasactions.push(transaction);
+        return this.chain[this.chain.length - 1].index + 1;
     }
-
-    isChainValid() {
-        for (let i = 1; i < this.chain.length; i++) {
-            const currentBlock = this.chain[i];
-            const previousBlock = this.chain[i - 1];
-
-            if (currentBlock.hash !== currentBlock.calculateHash()) {
-                return false;
-            }
-
-            if (currentBlock.previousHash !== previousBlock.hash) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
-function mineBlock(block, difficulty) {
-    while (!block.hash.startsWith("0".repeat(difficulty))) {
-        block.nonce++;
-        block.hash = crypto
-            .SHA256(
-                block.index +
-                    block.previousHash +
-                    block.timestamp +
-                    JSON.stringify(block.transactions).toString() +
-                    block.nonce,
-            )
-            .toString();
-    }
-    console.log("Block mined: " + block.hash);
 }

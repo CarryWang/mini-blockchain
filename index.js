@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 
-import { Blockchain, Block } from "./blockchain.js";
+import { Blockchain } from "./blockchain.js";
 
 const app = express();
 const port = 3000;
@@ -17,13 +17,18 @@ app.use(bodyParser.json());
 const blockchain = new Blockchain();
 
 app.get("/mine", (req, res) => {
-    blockchain.addBlock();
+    blockchain.createBlock();
     res.status(200).send(blockchain.chain[blockchain.chain.length - 1]);
 });
 
 app.post("/transactions/new", (req, res) => {
-    const data = req.body;
-    const blockNumber = blockchain.newTransaction(data);
+    // const transaction = {
+    //     sender: "sender_adress",
+    //     recipient: "recipient_adress",
+    //     amount: 50,
+    // };
+    const transaction = req.body;
+    const blockNumber = blockchain.createTransaction(transaction);
     res.status(200).send(`will be added to block ${blockNumber}`);
 });
 
